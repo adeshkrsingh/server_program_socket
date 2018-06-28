@@ -6,14 +6,21 @@ int main(int argc, char const *argv[])
     struct sockaddr_in serveraddress;
     struct sockaddr_in clientaddress;
     int addrlen = sizeof(serveraddress);
-    int max_clients = 3, client_socket[3];
+    int max_clients = NUM_CLIENT, client_socket[NUM_CLIENT];
 
     int max_sd, opt=1, msgFromClient, sd, valread;
     fd_set readfds;
-    struct timeval now;
+    time_t timer;
+    char timeBuffer[26];
+    time(&timer);
+    // tm_info = localtime(&timer);
+    // strftime(timeBuffer, 26, "%Y-%m-%d %H:%M:%S", tm_info);
+
+    struct tm* tm_info;
+
     struct timeval timeout;
-    int rc;
-    char buffer[1024];
+    // int rc;
+    char buffer[BUFFER_LENGTH];
     int i = 0;
     int numsocks = 0;
 
@@ -22,9 +29,9 @@ int main(int argc, char const *argv[])
     timeout.tv_usec = 0;
 
 
-    for (i = 0; i < max_clients; i++)  
+    for (i = 0; i < max_clients; i++)
     {
-        client_socket[i] = 0;  
+        client_socket[i] = 0;
     }
 
     // create socket
@@ -58,8 +65,8 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
 
-    rc = gettimeofday(&now, NULL);
-    if(rc==0) { printf("time = %u.%06u ", now.tv_sec, now.tv_usec); }
+    // rc = gettimeofday(&now, NULL);
+    // if(rc==0) { printf("time = %u.%06u ", now.tv_sec, now.tv_usec); }
 
 
 
@@ -78,30 +85,18 @@ int main(int argc, char const *argv[])
                 max_sd = client_socket[i];
             }
         }
-        // if(new_socket >  0 ) {
-        //     FD_SET(new_socket, &readfds);
-        //     if(master_socket > new_socket) {
-        //         max_sd = master_socket;
-        //     } else {
-        //         max_sd = new_socket;
-        //     }
-        // } else {
-        //     max_sd = master_socket;
-        // }
 
         // int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
         if( select(max_sd + 1, &readfds, NULL, NULL, NULL)  ) {
-            printf("select executed \n");
+            // printf("select executed \n");
         } else {
             // printf("select not executed");
         }
-        // printf("%d", isSelected);
 
 
 
         if (FD_ISSET(master_socket, &readfds))
         {
-            // if(new_socket == 0) {
                 printf(" now calling accept function...\n");
                 if ((new_socket = accept(master_socket, (struct sockaddr *)&clientaddress, (socklen_t *)&addrlen)) < 0)
                 {
@@ -109,51 +104,34 @@ int main(int argc, char const *argv[])
                     exit(EXIT_FAILURE);
                 }
                  FD_SET(new_socket, &readfds);
-                 printf("%d .....................", new_socket);
                 for(i = 0; i< max_clients; i++) {
                     int x1 = client_socket[i];
                     if( x1 == 0 ) {
                         client_socket[i] = new_socket;
-                        // FD_SET(new_socket, &readfds);
                         break;
                     }
                 }
                 printf("socket accept : %d \n", new_socket);
-            // } 
        }
-
-    //    if(FD_ISSET(new_socket, &readfds)) {
-    //        printf("now calling read function ..\n");
-    //         if (msgFromClient = read(new_socket, buffer, 1024))
-    //         {
-    //             printf("There is a message from client: %s \n", buffer);
-    //         } else {
-    //             new_socket = 0;
-    //             printf("message reading failed \n");
-    //         }
-    //    }
 
        for(i = 0; i< max_clients; i++) {
            sd = client_socket[i];
-           
            if( (sd != 0) ) {
                strcpy(buffer, "");
-            //    printf("loop 1 %d \t %i \n", sd, i);
-            //    printf("loop2 ");
                if(FD_ISSET(sd, &readfds)) {
+                    tm_info = localtime(&timer);
+                    strftime(timeBuffer, 26, "%Y-%m-%d %H:%M:%S", tm_info);
                     printf("now calling read function ..\n");
-                        if (msgFromClient = read(sd, buffer, 1024))
+                        if (msgFromClient = read(sd, buffer, BUFFER_LENGTH))
                         {
-                            printf("There is a message from client: %s \n", buffer);
+                            printf("There is a message from client: %s %s \n", timeBuffer, buffer);
                         } else {
                             sd = 0;
                             client_socket[i] = 0;
                             printf("message reading failed \n");
                         }
                 }
-                // sleep(1);
            } else {
-            //    printf("SD IS %d \n", sd);
            }
        }
 

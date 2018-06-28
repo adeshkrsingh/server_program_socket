@@ -3,5 +3,6 @@
 #define MAX_SIZE 50
 #define NUM_CLIENT 10
 #define MAX_PENDING_CONNECTION 10
+#define BUFFER_LENGTH 1024
 #define TRUE 1
 #define FALSE 0
