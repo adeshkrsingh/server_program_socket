@@ -1,0 +1,6 @@
+2018-6-26 14:9:16		connection status		Client has been connected with IP :127.0.0.1 and PORT :53818
+2018-6-26 14:9:16		message send 			This is a message from Server System
+2018-6-26 14:9:16		connection status		Client has been connected with IP :127.0.0.1 and PORT :53818
+2018-6-26 14:9:16		message received 		Hello from clientHello from client
+2018-6-26 14:10:43		connection status		Client has been connected with IP :127.0.0.1 and PORT :53822
+2018-6-26 14:10:43		message send 			This is a message from Server System
