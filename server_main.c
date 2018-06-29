@@ -1,5 +1,6 @@
 #include "header_description.h"
 
+
 int main(int argc, char const *argv[])
 {
     int master_socket, new_socket = 0;
@@ -28,7 +29,7 @@ int main(int argc, char const *argv[])
     timeout.tv_sec = 2;
     timeout.tv_usec = 0;
 
-
+     node* clientList[max_clients];
     for (i = 0; i < max_clients; i++)
     {
         client_socket[i] = 0;
@@ -71,7 +72,7 @@ int main(int argc, char const *argv[])
 
 
     while(1) {
-        // printf("while loop \n");
+        //printf("while loop \n");
         FD_ZERO(&readfds);
         FD_SET(master_socket, &readfds);
 
@@ -86,11 +87,13 @@ int main(int argc, char const *argv[])
             }
         }
 
+        //printf("while loop \n");
+
         // int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
         if( select(max_sd + 1, &readfds, NULL, NULL, NULL)  ) {
-            // printf("select executed \n");
+             printf("select executed \n");
         } else {
-            // printf("select not executed");
+             printf("select not executed");
         }
 
 
@@ -108,6 +111,8 @@ int main(int argc, char const *argv[])
                     int x1 = client_socket[i];
                     if( x1 == 0 ) {
                         client_socket[i] = new_socket;
+                        // createLinkedList("list_name");
+                         createLinkedList(clientList[i]);
                         break;
                     }
                 }
@@ -124,6 +129,8 @@ int main(int argc, char const *argv[])
                     printf("now calling read function ..\n");
                         if (msgFromClient = read(sd, buffer, BUFFER_LENGTH))
                         {
+                            // addListNode("list_name", "value");
+                             clientList[i]=addNode(clientList[i],buffer);
                             printf("There is a message from client: %s %s \n", timeBuffer, buffer);
                         } else {
                             sd = 0;
@@ -134,6 +141,12 @@ int main(int argc, char const *argv[])
            } else {
            }
        }
+
+
+
+
+       // printLinkedList("list_name")
+       //printList(clientList[0]);
 
     }
 

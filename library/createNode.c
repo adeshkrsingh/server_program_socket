@@ -1,6 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"nodeStruct.h"
+void createLinkedList(node* newListInitialise)
+{
+	newListInitialise=NULL;
+	return;
+}
 node* createNode(char data[])
 {
 	node * newNode=(node*)malloc(sizeof(node));

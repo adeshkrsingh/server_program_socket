@@ -2,19 +2,20 @@
 #include"nodeStruct.h"
 //node* head=NULL;
 //node* tail=NULL;
-node* addNode(node** head,node** tail,node* newNode)
+node* addNode(node* head,char data[])
 {
-	if(*head==NULL)
+	node* newNode=createNode(data);
+	if(head==NULL)
 	{
-		*head=newNode;
-		*tail=newNode;
+		head=newNode;
 	}
-	else
+	node* temp;
+	temp=head;
+	while(temp->link!=NULL)
 	{
-		(*tail)->link=newNode;
-		*tail=newNode;	
+		temp=temp->link;
 	}
-	printf("gjh %s %s",(*head)->data,(*tail)->data);
-	return *head;
+	temp->link=newNode;
+	return head;
 }
 
