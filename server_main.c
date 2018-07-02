@@ -112,13 +112,13 @@ int main(int argc, char const *argv[])
                     if( x1 == 0 ) {
                         client_socket[i] = new_socket;
                         // createLinkedList("list_name");
-                        // createLinkedList(clientList[i]);
+                        createLinkedList(clientList[i]);
                         break;
                     }
                 }
                 printf("socket accept : %d \n", new_socket);
        }
-        createLinkedList(clientList[0]);
+        // createLinkedList(clientList[0]);
        for(i = 0; i< max_clients; i++) {
            sd = client_socket[i];
            if( (sd != 0) ) {
@@ -132,9 +132,9 @@ int main(int argc, char const *argv[])
                             // addListNode("list_name", "value");
                             printf("%s \n", buffer);
 
-                             clientList[0]=addNode(clientList[0],buffer);
-                             printf("\n %s ------------\n", clientList[0]->data);
-                            printf("There is a message from client: %s %s and position is %d \n", timeBuffer, buffer, i);
+                             clientList[i]=addNode(clientList[i],buffer);
+                            //  printf("\n %s ------------\n", clientList[0]->data);
+                            printf("Message from client ID [%d] time [%s] \n", i, timeBuffer);
                         } else {
                             sd = 0;
                             client_socket[i] = 0;
@@ -146,11 +146,18 @@ int main(int argc, char const *argv[])
        }
 
 
+    for(i = 0; i< max_clients; i++) {
+           sd = client_socket[i];
+           if( (sd != 0) ) {
+               printf("Printing linkedlist data from client [%d] \n", i);
+               printList(clientList[i]);
+           }
+    }
 
 
        // printLinkedList("list_name")
     //    printf("%s \n",clientList[0] );
-        //printList(clientList[0]);
+        
 
     }
 
