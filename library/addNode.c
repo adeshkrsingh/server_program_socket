@@ -5,9 +5,11 @@
 node* addNode(node* head,char data[])
 {
 	node* newNode=createNode(data);
+	printf("\nnew node %s\n",data);
 	if(head==NULL)
 	{
 		head=newNode;
+		return head;
 	}
 	node* temp;
 	temp=head;
@@ -16,6 +18,7 @@ node* addNode(node* head,char data[])
 		temp=temp->link;
 	}
 	temp->link=newNode;
+	
 	return head;
 }
 

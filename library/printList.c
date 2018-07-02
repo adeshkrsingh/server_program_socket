@@ -6,11 +6,12 @@
 
 void printList(node* head)
 {
+	int counter = 0;
 	node* temp=head;
 	while(temp!=NULL)
 	{
-		printf("%s\n",temp->data);
-		temp=temp->link;	
+		printf("%s %d \n",temp->data, (counter++));
+		temp=temp->link;
 	}
 } 
 
